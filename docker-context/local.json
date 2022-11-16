@@ -1,0 +1,12 @@
+{
+  "phabricator.silent": true,
+  "log.access.path": "/var/log/phabricator/access.log",
+  "repository.default-local-path": "/opt/repos",
+  "storage.default-namespace": "phabricator",
+  "mysql.pass": "phabricator",
+  "mysql.user": "phabricator",
+  "mysql.host": "phabdev-db",
+  "storage.local-disk.path": "/opt/filestore",
+  "phd.user": "phab-phd",
+  "phabricator.base-uri": "http://phabricator.dev"
+}

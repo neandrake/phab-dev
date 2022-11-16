@@ -1,0 +1,46 @@
+version: "3.2"
+
+services:
+  phabdev-db:
+    container_name: phabdev-db
+    image: mariadb
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=phabricator_secret
+    networks:
+      - phabnet
+    volumes:
+      - db-data:/var/lib/mysql
+
+  phabricator:
+    container_name: phabdev
+    build: .
+    restart: "no"
+    networks:
+      - phabnet
+    volumes:
+      - ./phabricator:/var/www/phabricator/
+      - ./arcanist:/var/www/arcanist/
+      - filestore:/opt/filestore/
+      - repos:/opt/repos/
+    ports:
+      - "8080:80"
+
+networks:
+  phabnet:
+
+volumes:
+  db-data:
+    name: "phabdev-db"
+    external: false
+    driver: local
+
+  filestore:
+    name: "phabdev-filestore"
+    external: false
+    driver: local
+
+  repos:
+    name: "phabdev-repos"
+    external: false
+    driver: local
