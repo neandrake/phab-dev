@@ -11,5 +11,6 @@ $ ln -s ../arcanist arcanist
 ```
 $ docker-compose up
 ```
-4. Navigate to `http://localhost:8080`
+4. Modify local `/etc/hosts` and add `127.0.0.1 phabricator.dev`
+5. Navigate to `http://phabricator.dev:8080`
 

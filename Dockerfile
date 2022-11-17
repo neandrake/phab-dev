@@ -12,6 +12,7 @@ RUN apt-get install -y sudo netcat-traditional iputils-ping git nginx mariadb-cl
 
 ADD ./docker-context/nginx.conf /etc/nginx/
 ADD ./docker-context/phab.conf /etc/nginx/conf.d/
+ADD ./docker-context/www.conf /etc/php/7.4/fpm/pool.d/
 
 # Allow www-data (entrypoint) to sudo as root to run nginx
 RUN echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/nginx" >> /etc/sudoers && \
