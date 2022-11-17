@@ -10,9 +10,9 @@ RUN apt-get install -y sudo netcat-traditional iputils-ping git nginx mariadb-cl
     apt-get update && \
     apt-get install -y php7.4 php7.4-fpm php7.4-mysql php7.4-gd php7.4-curl php7.4-apcu php7.4-cli php7.4-mbstring php7.4-zip php7.4-xdebug php7.4-iconv
 
-ADD ./docker-context/nginx.conf /etc/nginx/
-ADD ./docker-context/phab.conf /etc/nginx/conf.d/
-ADD ./docker-context/www.conf /etc/php/7.4/fpm/pool.d/
+ADD ./conf/nginx.conf /etc/nginx/
+ADD ./conf/phab.conf /etc/nginx/conf.d/
+ADD ./conf/www.conf /etc/php/7.4/fpm/pool.d/
 
 # Allow www-data (entrypoint) to sudo as root to run nginx
 RUN echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/nginx" >> /etc/sudoers && \
@@ -39,7 +39,7 @@ RUN chown -R phab-phd:phab /opt/ && \
 # Run entrypoint as the web service account
 USER www-data
 
-ADD ./docker-context/local.json /opt/phabdev
-ADD ./docker-context/entrypoint.sh /opt/phabdev
+ADD ./conf/local.json /opt/phabdev
+ADD ./conf/entrypoint.sh /opt/phabdev
 
 ENTRYPOINT ["/opt/phabdev/entrypoint.sh"]
