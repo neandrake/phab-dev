@@ -23,7 +23,7 @@ $ ln -s ../arcanist arcanist
 ```
 $ docker-compose up
 ```
-5. Modify local `/etc/hosts` and add `127.0.0.1 phabricator.test`
+5. Modify local `/etc/hosts` or `C:\Windows\System32\drivers\etc\hosts` and add `127.0.0.1 phabricator.test`
 6. Navigate to `http://phabricator.test`
 7. Address outstanding setup issues such as configuring an Auth Provider
   - These setup issues can be ignored since this is only intended for local development:
