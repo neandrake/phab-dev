@@ -3,8 +3,8 @@ version: "3.2"
 services:
   phabdev-db:
     build:
-      context: .
-      dockerfile: mariadb.Dockerfile
+      context: ./mariadb-container
+      dockerfile: ./Dockerfile
     restart: always
     environment:
       - MARIADB_ROOT_PASSWORD=phabricator_secret
@@ -14,7 +14,9 @@ services:
       - db-data:/var/lib/mysql
 
   phabdev-www:
-    build: .
+    build:
+      context: ./phab-container
+      dockerfile: ./Dockerfile
     restart: "no"
     networks:
       - phabnet
