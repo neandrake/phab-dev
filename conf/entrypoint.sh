@@ -1,12 +1,26 @@
 #!/bin/bash
 
-installdir=/var/www/phabricator
+set -e
+#set -x
 
-# The install directory is mapped to a local folder. Only copy this default config
-# over if there isn't one already, otherwise use the one that's there.
-if [[ ! -f "$installdir/conf/local.json" ]]; then
-	mv /opt/phabdev/local.json $installdir/conf/local/
+installdir=$INSTALLDIR
+host=$HOST
+port=$PORT
+
+if [ "$PORT" = "80" ]; then
+    base_uri=http://$host
+else
+    base_uri=http://$host:$port
 fi
+
+mv /opt/phabdev/local.json $installdir/conf/local/
+
+escaped_base_uri=$(printf '%s\n' "$base_uri" | sed -e 's/[\/&]/\\&/g')
+sed -i 's/BASE_URI/'${escaped_base_uri}'/g' $installdir/conf/local/local.json
+
+escaped_installdir=$(printf '%s\n' "$INSTALLDIR" | sed -e 's/[\/&]/\\&/g')
+sudo sed -i 's/PHABDEV_HOST/'${HOST}'/g' /etc/nginx/conf.d/phab.conf
+sudo sed -i 's/PHABDEV_INSTALLDIR/'${escaped_installdir}'/g' /etc/nginx/conf.d/phab.conf
 
 # Wait for mysql
 while ! nc -z phabdev-db 3306 2>/dev/null
@@ -22,6 +36,7 @@ sudo -u phab-phd $installdir/bin/phd start
 
 sudo php-fpm7.4 --daemonize
 
-echo "Starting web server on http://localhost:8080 ..."
+echo "(Remember to update /etc/hosts to include \"127.0.0.1 $host\")"
+echo "Starting web server on $base_uri ..."
 exec sudo nginx
 

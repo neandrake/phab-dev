@@ -2,8 +2,9 @@ version: "3.2"
 
 services:
   phabdev-db:
-    container_name: phabdev-db
-    image: mariadb
+    build:
+      context: .
+      dockerfile: mariadb.Dockerfile
     restart: always
     environment:
       - MARIADB_ROOT_PASSWORD=phabricator_secret
@@ -12,19 +13,22 @@ services:
     volumes:
       - db-data:/var/lib/mysql
 
-  phabricator:
-    container_name: phabdev
+  phabdev-www:
     build: .
     restart: "no"
     networks:
       - phabnet
     volumes:
-      - ./phabricator:/var/www/phabricator/
-      - ./arcanist:/var/www/arcanist/
+      - ./phabricator:$INSTALLDIR/phabricator/
+      - ./arcanist:$INSTALLDIR/arcanist/
       - filestore:/opt/filestore/
       - repos:/opt/repos/
     ports:
-      - "8080:80"
+      - "${PORT}:80"
+    environment:
+      - INSTALLDIR=${INSTALLDIR}/phabricator
+      - HOST=${HOST}
+      - PORT=${PORT}
 
 networks:
   phabnet:
