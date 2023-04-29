@@ -13,7 +13,7 @@ else
     base_uri=http://$host:$port
 fi
 
-mv /opt/phabdev/local.json $installdir/conf/local/
+cp /opt/phabdev/local.json $installdir/conf/local/
 
 escaped_base_uri=$(printf '%s\n' "$base_uri" | sed -e 's/[\/&]/\\&/g')
 sed -i 's/BASE_URI/'${escaped_base_uri}'/g' $installdir/conf/local/local.json
@@ -34,7 +34,7 @@ $installdir/bin/storage upgrade --force
 
 sudo -u phab-phd $installdir/bin/phd start
 
-sudo php-fpm7.4 --daemonize
+sudo php-fpm${PHPVER} --daemonize
 
 echo "(Remember to update /etc/hosts to include \"127.0.0.1 $host\")"
 echo "Starting web server on $base_uri ..."
