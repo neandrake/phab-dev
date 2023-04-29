@@ -23,5 +23,6 @@ $ docker-compose up
 7. Address outstanding setup issues such as configuring an Auth Provider. These setup issues can be ignored since this is only intended for local development:
   - Alternate File Domain Not Configured
   - Mailers Not Configured
+8. You will probably want to register a new account while remaining logged in as the initial admin. The initial admin account does not have a password. The only way to set a password for this admin account requires sending email, which this development environment does not have configured.
 
 If you need to modify the `.env` file after the first time running `docker-compose up` you will need to re-build using `docker-compose build --no-cache`.
