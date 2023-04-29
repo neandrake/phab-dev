@@ -1,6 +1,6 @@
 A docker-compose configuration for running a phabricator server for development
 
-## Setup
+## One-time Setup
 1. Clone this repository
 2. Modify the `.env` file to set desired variables
   - The `INSTALLDIR` variable should generally not be changed, it's the location within the container where phabricator/arcanist will be installed to.
@@ -26,5 +26,11 @@ $ docker-compose up
     - Mailers Not Configured
 8. You will probably want to register a new account while remaining logged in as the initial admin. The initial admin account does not have a password. The only way to set a password for this admin account requires sending email, which this development environment does not have configured.
   - Pro tip: You can lower the minimum password length by changing `account.minimum-password-length` setting.
+
+
+## Shutting down, restarting
+When running with `docker-compose up` the stdin/stdout will be tied to your terminal. If you want to run it in the background use `docker-compose up -d`.
+
+To stop the services use `docker-compose stop`.
 
 If you need to modify the `.env` file after the first time running `docker-compose up` you will need to re-build using `docker-compose build --no-cache`.
