@@ -9,7 +9,12 @@ A docker-compose configuration for running a phabricator server for development
 3. Modify the `conf/local.json` file to configure for your setup
   - Items above the blank line should generally not need configured. JSON does not support comments otherwise this would be indicated directly in the file.
   - Update `phabricator.timezone` to match your current/local timezone. The value for this should be a valid PHP time zone.
-3. Symlink `phabricator` and `arcanist` inside the repo folder
+3. Clone phabricator and arcanist repos within this one (the `.gitignore` will avoid git repo conflicts).
+```
+$ git clone ../phabricator.git
+$ git clone ../arcanist.git
+```
+Alternative, symlink `phabricator` and `arcanist` inside the repo folder
 ```
 $ ln -s ../phabricator phabricator
 $ ln -s ../arcanist arcanist
