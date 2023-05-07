@@ -12,5 +12,7 @@
   "phabricator.base-uri": "BASE_URI",
   "pygments.enabled": true,
 
-  "phabricator.timezone": "America/New_York"
+  "phabricator.timezone": "America/New_York",
+  "darkconsole.enabled": true,
+  "darkconsole.always-on": true
 }
