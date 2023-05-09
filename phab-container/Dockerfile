@@ -11,6 +11,8 @@ RUN apt-get install -y sudo netcat-traditional iputils-ping ca-certificates soft
     apt-get install -y mariadb-client nginx && \
     apt-get install -y git mercurial && \
     apt-get install -y vim less ripgrep fd-find && \
+    apt-get install -y nodejs && \
+    apt-get install -y --no-install-recommends npm && \
     add-apt-repository -y ppa:ondrej/php && \
     apt-get update && \
     apt-get install -y php${PHPVER} php${PHPVER}-fpm php${PHPVER}-mysql php${PHPVER}-gd php${PHPVER}-curl php${PHPVER}-apcu php${PHPVER}-cli php${PHPVER}-mbstring php${PHPVER}-zip php${PHPVER}-xdebug php${PHPVER}-iconv && \
@@ -44,12 +46,16 @@ RUN mkdir -p /opt/phabdev/ && \
     mkdir -p /opt/filestore && \
     mkdir -p /opt/repos && \
     mkdir -p /var/log/phabricator && \
-    mkdir -p /run/php/
+    mkdir -p /run/php/ && \
+    touch /var/log/aphlict.log
 
 RUN chown -R phab-phd:phab /opt/ && \
     chown -R www-data:phab /var/log/phabricator/ && \
+    chown -R www-data:phab /var/www/ && \
+    chown www-data:phab /var/log/aphlict.log && \
     chmod -R g+rw /opt/ && \
-    chmod -R g+rw /var/log/phabricator/
+    chmod -R g+rw /var/log/phabricator/ && \
+    chmod g+rw /var/log/aphlict.log
 
 # Run entrypoint as the web service account
 USER www-data

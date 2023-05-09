@@ -9,8 +9,24 @@
   "mysql.host": "phabdev-db",
   "storage.local-disk.path": "/opt/filestore",
   "phd.user": "phab-phd",
+  "auth.lock-config": true,
   "phabricator.base-uri": "BASE_URI",
   "pygments.enabled": true,
+  "notification.servers": [
+    {
+        "type": "client",
+        "host": "HOST",
+        "port": 22280,
+        "protocol": "http",
+        "path": "/ws/"
+    },
+    {
+        "type": "admin",
+        "host": "127.0.0.1",
+        "port": 22281,
+        "protocol": "http"
+    }
+  ],
 
   "phabricator.timezone": "America/New_York",
   "darkconsole.enabled": true,

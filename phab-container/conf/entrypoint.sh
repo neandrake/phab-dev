@@ -17,6 +17,11 @@ cp /opt/phabdev/local.json $installdir/conf/local/
 
 escaped_base_uri=$(printf '%s\n' "$base_uri" | sed -e 's/[\/&]/\\&/g')
 sed -i 's/BASE_URI/'${escaped_base_uri}'/g' $installdir/conf/local/local.json
+escaped_host=$(printf '%s\n' "$host" | sed -e 's/[\/&]/\\&/g')
+sed -i 's/HOST/'${escaped_host}'/g' $installdir/conf/local/local.json
+
+npm --prefix $installdir/support/aphlict/server --silent install ws
+(exec $installdir/bin/aphlict start --config $installdir/conf/aphlict/aphlict.default.json) &
 
 escaped_installdir=$(printf '%s\n' "$INSTALLDIR" | sed -e 's/[\/&]/\\&/g')
 sudo sed -i 's/PHABDEV_HOST/'${HOST}'/g' /etc/nginx/conf.d/phab.conf
@@ -36,7 +41,9 @@ sudo -u phab-phd $installdir/bin/phd start
 
 sudo php-fpm${PHPVER} --daemonize
 
-echo "(Remember to update /etc/hosts to include \"127.0.0.1 $host\")"
+echo "Remember to update /etc/hosts to include:"
+echo -e "    127.0.0.1 $host \t\t# For accessing from your browser "
+echo -e "    127.0.0.1 phabdev-db \t\t# For unit tests to access the database "
 echo "Starting web server on $base_uri ..."
 exec sudo nginx
 
