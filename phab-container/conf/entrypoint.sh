@@ -41,6 +41,8 @@ sudo -u phab-phd $installdir/bin/phd start
 
 sudo php-fpm${PHPVER} --daemonize
 
+sudo /usr/sbin/sshd -f /etc/ssh/sshd_config.d/phab.sshd_config -E /var/log/sshd.log
+
 echo "Remember to update /etc/hosts to include:"
 echo -e "    127.0.0.1 $host \t\t# For accessing from your browser "
 echo -e "    127.0.0.1 phabdev-db \t\t# For unit tests to access the database "

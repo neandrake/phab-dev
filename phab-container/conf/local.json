@@ -12,6 +12,7 @@
   "auth.lock-config": true,
   "phabricator.base-uri": "BASE_URI",
   "pygments.enabled": true,
+  "diffusion.ssh-user": "wanderer",
   "notification.servers": [
     {
         "type": "client",

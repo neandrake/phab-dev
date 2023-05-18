@@ -9,6 +9,7 @@ ENV PHPVER 8.2
 
 RUN apt-get install -y sudo netcat-traditional iputils-ping ca-certificates software-properties-common apt-transport-https && \
     apt-get install -y mariadb-client nginx && \
+    apt-get install -y --no-install-recommends ssh && \
     apt-get install -y git mercurial && \
     apt-get install -y vim less ripgrep fd-find && \
     apt-get install -y nodejs && \
@@ -29,12 +30,15 @@ ADD ./conf/nginx.conf /etc/nginx/
 ADD ./conf/phab.conf /etc/nginx/conf.d/
 ADD ./conf/www.conf /etc/php/$PHPVER/fpm/pool.d/
 ADD ./conf/00-phab.ini /etc/php/$PHPVER/fpm/conf.d/
+ADD ./conf/phab.sshd_config /etc/ssh/sshd_config.d/
+ADD ./conf/phabricator-ssh-hook.sh /usr/libexec/
 
 # Allow www-data (entrypoint) to sudo as root to run nginx
 RUN echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/nginx" >> /etc/sudoers && \
     echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/php-fpm$PHPVER" >> /etc/sudoers && \
     echo "www-data  ALL=(phab-phd)  NOPASSWD: ALL" >> /etc/sudoers && \
     echo "www-data  ALL=(root)  NOPASSWD: /usr/bin/sed" >> /etc/sudoers && \
+    echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/sshd" >> /etc/sudoers && \
     echo "phab-phd  ALL=(root)  NOPASSWD: ALL" >> /etc/sudoers
 
 RUN useradd --system phab-phd && \
@@ -42,11 +46,17 @@ RUN useradd --system phab-phd && \
     usermod -a -G phab phab-phd && \
     usermod -a -G phab www-data
 
+# The user which accepts incoming SSH
+RUN useradd --system --create-home wanderer && \
+    usermod -a -G phab wanderer && \
+    usermod -p '*' wanderer
+
 RUN mkdir -p /opt/phabdev/ && \
     mkdir -p /opt/filestore && \
     mkdir -p /opt/repos && \
     mkdir -p /var/log/phabricator && \
     mkdir -p /run/php/ && \
+    mkdir -p /run/sshd/ && \
     touch /var/log/aphlict.log
 
 RUN chown -R phab-phd:phab /opt/ && \
@@ -55,6 +65,7 @@ RUN chown -R phab-phd:phab /opt/ && \
     chown www-data:phab /var/log/aphlict.log && \
     chmod -R g+rw /opt/ && \
     chmod -R g+rw /var/log/phabricator/ && \
+    chmod -R 0755 /run/sshd/ && \
     chmod g+rw /var/log/aphlict.log
 
 # Run entrypoint as the web service account

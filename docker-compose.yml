@@ -29,6 +29,7 @@ services:
       - repos:/opt/repos/
     ports:
       - "${PORT}:80"
+      - "22:22"
     environment:
       - INSTALLDIR=${INSTALLDIR}/phabricator
       - HOST=${HOST}
