@@ -39,6 +39,7 @@ RUN echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/nginx" >> /etc/sudoers.d/pha
     echo "www-data  ALL=(phab-phd)  NOPASSWD: ALL" >> /etc/sudoers.d/phab-sudoers && \
     echo "www-data  ALL=(root)  NOPASSWD: /usr/bin/sed" >> /etc/sudoers.d/phab-sudoers && \
     echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/sshd" >> /etc/sudoers.d/phab-sudoers && \
+    echo "www-data  ALL=(root)  NOPASSWD: /usr/bin/rm /var/tmp/aphlict/pid/aphlict.pid" >> /etc/sudoers.d/phab-sudoers && \
     echo "phab-phd  ALL=(root)  NOPASSWD: ALL" >> /etc/sudoers.d/phab-sudoers && \
     echo "wanderer  ALL=(phab-phd)  SETENV: NOPASSWD: /usr/bin/hg, /usr/bin/git, /usr/bin/git-upload-pack, /usr/bin/git-upload-archive, /usr/bin/git-receive-pack" >> /etc/sudoers.d/phab-sudoers
 

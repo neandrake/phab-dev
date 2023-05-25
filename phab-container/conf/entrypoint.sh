@@ -20,6 +20,9 @@ sed -i 's/BASE_URI/'${escaped_base_uri}'/g' $installdir/conf/local/local.json
 escaped_host=$(printf '%s\n' "$host" | sed -e 's/[\/&]/\\&/g')
 sed -i 's/HOST/'${escaped_host}'/g' $installdir/conf/local/local.json
 
+if [[ -f "/var/tmp/aphlict/pid/aphlict.pid" ]]; then
+    sudo rm /var/tmp/aphlict/pid/aphlict.pid
+fi
 npm --prefix $installdir/support/aphlict/server --silent install ws
 (exec $installdir/bin/aphlict start --config $installdir/conf/aphlict/aphlict.default.json) &
 
