@@ -30,8 +30,11 @@ ADD ./conf/nginx.conf /etc/nginx/
 ADD ./conf/phab.conf /etc/nginx/conf.d/
 ADD ./conf/www.conf /etc/php/$PHPVER/fpm/pool.d/
 ADD ./conf/00-phab.ini /etc/php/$PHPVER/fpm/conf.d/
+ADD ./conf/phab-fpm.conf /etc/php/$PHPVER/fpm/pool.d/
 ADD ./conf/phab.sshd_config /etc/ssh/sshd_config.d/
 ADD ./conf/phabricator-ssh-hook.sh /usr/libexec/
+
+RUN ln -s /usr/lib/git-core/git-http-backend /usr/bin/
 
 # Allow www-data (entrypoint) to sudo as root to run nginx
 RUN echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/nginx" >> /etc/sudoers.d/phab-sudoers && \
@@ -41,7 +44,7 @@ RUN echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/nginx" >> /etc/sudoers.d/pha
     echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/sshd" >> /etc/sudoers.d/phab-sudoers && \
     echo "www-data  ALL=(root)  NOPASSWD: /usr/bin/rm /var/tmp/aphlict/pid/aphlict.pid" >> /etc/sudoers.d/phab-sudoers && \
     echo "phab-phd  ALL=(root)  NOPASSWD: ALL" >> /etc/sudoers.d/phab-sudoers && \
-    echo "wanderer  ALL=(phab-phd)  SETENV: NOPASSWD: /usr/bin/hg, /usr/bin/git, /usr/bin/git-upload-pack, /usr/bin/git-upload-archive, /usr/bin/git-receive-pack" >> /etc/sudoers.d/phab-sudoers
+    echo "wanderer  ALL=(phab-phd)  SETENV: NOPASSWD: /usr/bin/hg, /usr/bin/git, /usr/bin/git-upload-pack, /usr/bin/git-upload-archive, /usr/bin/git-receive-pack /usr/bin/git-http-backend" >> /etc/sudoers.d/phab-sudoers
 
 RUN useradd --system phab-phd && \
     groupadd phab && \
@@ -60,7 +63,8 @@ RUN mkdir -p /opt/phabdev/ && \
     mkdir -p /run/php/ && \
     mkdir -p /run/sshd/ && \
     touch /var/log/aphlict.log && \
-    touch /var/log/phab-ssh-error.log
+    touch /var/log/phab-ssh-error.log && \
+    touch /var/log/php-error.log
 
 RUN chown -R phab-phd:phab  /opt/ && \
     chown -R www-data:phab  /var/log/phabricator/ && \
@@ -70,7 +74,8 @@ RUN chown -R phab-phd:phab  /opt/ && \
     chmod -R g+rws  /var/log/phabricator/ && \
     chmod -R 0755   /run/sshd/ && \
     chmod    g+rw   /var/log/aphlict.log && \
-    chmod    g+rw   /var/log/phab-ssh-error.log
+    chmod    g+rw   /var/log/phab-ssh-error.log && \
+    chown    www-data:phab  /var/log/php-error.log
 
 # Run entrypoint as the web service account
 USER www-data
