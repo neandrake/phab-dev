@@ -30,6 +30,7 @@ services:
     ports:
       - "${PORT}:80"
       - "22:22"
+      - "22280:22280"
     environment:
       - INSTALLDIR=${INSTALLDIR}/phabricator
       - HOST=${HOST}
