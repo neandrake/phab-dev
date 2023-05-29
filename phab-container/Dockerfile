@@ -44,7 +44,7 @@ RUN echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/nginx" >> /etc/sudoers.d/pha
     echo "www-data  ALL=(root)  NOPASSWD: /usr/sbin/sshd" >> /etc/sudoers.d/phab-sudoers && \
     echo "www-data  ALL=(root)  NOPASSWD: /usr/bin/rm /var/tmp/aphlict/pid/aphlict.pid" >> /etc/sudoers.d/phab-sudoers && \
     echo "phab-phd  ALL=(root)  NOPASSWD: ALL" >> /etc/sudoers.d/phab-sudoers && \
-    echo "wanderer  ALL=(phab-phd)  SETENV: NOPASSWD: /usr/bin/hg, /usr/bin/git, /usr/bin/git-upload-pack, /usr/bin/git-upload-archive, /usr/bin/git-receive-pack /usr/bin/git-http-backend" >> /etc/sudoers.d/phab-sudoers
+    echo "wanderer  ALL=(phab-phd)  SETENV: NOPASSWD: /usr/bin/hg, /usr/bin/git, /usr/bin/git-upload-pack, /usr/bin/git-upload-archive, /usr/bin/git-receive-pack, /usr/bin/git-http-backend" >> /etc/sudoers.d/phab-sudoers
 
 RUN useradd --system phab-phd && \
     groupadd phab && \
