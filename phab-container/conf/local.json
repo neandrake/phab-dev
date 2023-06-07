@@ -12,6 +12,7 @@
   "auth.lock-config": true,
   "phabricator.base-uri": "BASE_URI",
   "pygments.enabled": true,
+  "phabricator.show-prototypes": true,
   "log.ssh-error.path": "/var/log/phab-ssh-error.log",
   "diffusion.ssh-user": "wanderer",
   "diffusion.allow-http-auth": true,
