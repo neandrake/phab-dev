@@ -36,7 +36,7 @@ do
 	sleep 0.1
 done
 
-mariadb --host=phabdev-db --user=root --password=phabricator_secret --execute="GRANT ALL PRIVILEGES ON *.* TO 'phabricator'@'%' IDENTIFIED BY 'phabricator' WITH GRANT OPTION;"
+mariadb --host=phabdev-db --ssl --user=root --password=phabricator_secret --execute="GRANT ALL PRIVILEGES ON *.* TO 'phabricator'@'%' IDENTIFIED BY 'phabricator' WITH GRANT OPTION;"
 
 $installdir/bin/storage upgrade --force
 

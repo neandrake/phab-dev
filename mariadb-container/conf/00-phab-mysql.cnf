@@ -4,3 +4,8 @@ sql_mode = STRICT_ALL_TABLES
 innodb_buffer_pool_size = 1600M
 local_infile = 0
 
+ssl_ca=/etc/phab-db/ssl/ca.pem
+ssl_cert=/etc/phab-db/ssl/server-cert.pem
+ssl_key=/etc/phab-db/ssl/server-key.pem
+require_secure_transport=ON
+
